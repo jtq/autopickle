@@ -1,0 +1,38 @@
+#autocomplete-wrapper {
+  position: relative;
+}
+
+#input {
+  margin: 0;
+}
+
+#autocomplete {
+  position: absolute;
+  list-style-type: none;
+  border: 1px solid #8080ff;
+  padding: 0;
+  margin: 0;
+  display: none;
+}
+
+#autocomplete .item {
+  padding: 0.25em 0.5em;
+  background-color: #f0f0ff;
+  cursor: pointer;
+}
+
+#autocomplete .item:hover {
+  background-color: #8080ff;
+  color: #f0f0ff;
+}
+
+#autocomplete .var {
+  font-weight: bold;
+  font-family: monospace;
+}
+
+#test {
+  float: right;
+  border: 1px solid #80ff80;
+  margin: 0 2em;
+}
