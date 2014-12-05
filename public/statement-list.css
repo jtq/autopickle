@@ -1,0 +1,37 @@
+#statement-list {
+  float: right;
+  border: 1px solid #8080ff;
+  background-color: #f0f0ff;
+  padding: 1em;
+  list-style-type: none;
+  display: none;
+}
+
+#statement-list li {
+  padding: 0.25em;
+  overflow: auto;
+  height: 18px;
+  border: 1px solid transparent;
+}
+
+#statement-list li:hover {
+  border: 1px dashed #8080ff;
+}
+
+#statement-list li.sortable-dragging {
+	border: 1px solid #8080ff;
+}
+
+#statement-list li.sortable-placeholder {
+	border: 1px dashed #8080ff;
+}
+
+#statement-list .statement .del {
+  border: 1px solid #ff0000;
+  background-color: #ff8080;
+  padding: 0 0.25em;
+  margin: 0 0 0 1em;
+  display: inline-block;
+  font-family: monospace;
+  float: right;
+}

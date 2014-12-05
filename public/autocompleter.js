@@ -29,7 +29,7 @@ var autocompleter = {
   },
 
   format_autocomplete_entry: function(entry) {
-    return '<li class="item" title="'+entry.examples.slice(0,3).join("&#13;").replace(/"/g, '&quot;')+'">'+entry.function.replace(/\{([^}]+)\}/g, '<span class="var">$1</span>')+'</li>';
+    return '<li class="item" onclick="statement_list.add(this.innerText);" title="'+entry.examples.slice(0,3).join("&#13;").replace(/"/g, '&quot;')+'">'+entry.function.replace(/\{([^}]+)\}/g, '<span class="var">$1</span>')+'</li>';
   }
 
 };
