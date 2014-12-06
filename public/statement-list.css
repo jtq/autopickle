@@ -51,14 +51,9 @@
 
 #statement-list .statement .handle {
   order: 1;
-  border: 1px solid #8080ff;
-  background-color: #f0f0ff;
   cursor: ns-resize;
 }
 
 #statement-list .statement .del {
   order: 3;
-  border: 1px solid #ff0000;
-  background-color: #ff8080;
-  font-family: monospace;
 }

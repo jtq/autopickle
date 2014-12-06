@@ -55,14 +55,14 @@ var statement_list = {
   	label.innerText = prefix + " " + statement;
   	el.appendChild(label);
 
-  	var handle = document.createElement("span");
+  	var handle = document.createElement("img");
   	handle.className = "handle";
-  	handle.innerHTML = "&diams;";
+  	handle.src = "/assets/elevator.svg";
 	el.appendChild(handle);
 
-  	var del = document.createElement("span");
+  	var del = document.createElement("img");
   	del.className = "del";
-  	del.innerText = "X";
+  	del.src = "/assets/delete.svg";
   	del.addEventListener('click', function(e) {
       self.remove(index);
   	});
