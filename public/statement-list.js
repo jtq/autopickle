@@ -9,8 +9,10 @@ var statement_list = {
   },
 
   add: function(command) {
-  	if(typeof command === 'object') {
-  	  command = command.function;
+  	if(typeof command === 'string') {
+  		command = {
+  			function: command
+  		};
   	}
 
   	this.statements.push(command);
@@ -63,7 +65,7 @@ var statement_list = {
   	else if(index === this.statements.length-1) {
   		prefix = "Then";
   	}
-  	label.innerText = prefix + " " + statement;
+  	label.innerText = prefix + " " + statement.function;
   	label.innerHTML = label.innerText.replace(/\{([^}]+)\}/g, '<span class="var">$1</span>');
   	el.appendChild(label);
 
