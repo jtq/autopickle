@@ -10,9 +10,19 @@ var statement_list = {
 
   add: function(command) {
   	if(typeof command === 'string') {
-  		command = {
-  			function: command
-  		};
+  	  command = {
+  	    function: command
+  	  };
+  	}
+
+  	if(command.function) {
+  	  var vars = command.function.match(/\{[^\}]+\}/g);
+  	  command.values = {};
+  	  for(var i=0; vars && i<vars.length; i++) {
+  	  	var varname = vars[i].slice(1, -1);
+  	  	var example = (command.examples && command.examples.length) ? "\r\nExample: "+command.examples[0] : "";
+  	  	command.values[varname] = prompt("Command: "+command.function+example+"\r\nPlease enter a value for variable "+varname);
+  	  }
   	}
 
   	this.statements.push(command);
@@ -65,7 +75,7 @@ var statement_list = {
   	else if(index === this.statements.length-1) {
   		prefix = "Then";
   	}
-  	label.innerText = prefix + " " + statement.function;
+  	label.innerText = prefix + " " + this.interpolate(statement);
   	label.innerHTML = label.innerText.replace(/\{([^}]+)\}/g, '<span class="var">$1</span>');
   	el.appendChild(label);
 
@@ -83,5 +93,13 @@ var statement_list = {
   	el.appendChild(del);
 
   	return el;
+  },
+
+  interpolate: function(statement) {
+  	var result = statement.function;
+  	for(var key in statement.values) {
+      result = result.replace('{'+key+'}', '{'+statement.values[key]+'}');
+  	}
+  	return result;
   }
 };
