@@ -8,8 +8,12 @@ var statement_list = {
     }
   },
 
-  add: function(command_str) {
-    this.statements.push(command_str);
+  add: function(command) {
+  	if(typeof command === 'object') {
+  	  command = command.function;
+  	}
+
+  	this.statements.push(command);
     this.render();
   },
 
@@ -60,6 +64,7 @@ var statement_list = {
   		prefix = "Then";
   	}
   	label.innerText = prefix + " " + statement;
+  	label.innerHTML = label.innerText.replace(/\{([^}]+)\}/g, '<span class="var">$1</span>');
   	el.appendChild(label);
 
   	var handle = document.createElement("img");

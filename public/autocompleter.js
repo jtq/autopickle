@@ -39,9 +39,10 @@ var autocompleter = {
 
   format_autocomplete_entry: function(entry) {
     var el = document.createElement("li");
+    el.dictionaryEntry = entry;
     el.className = "item";
     el.addEventListener('click', function(e) {
-      statement_list.add(this.innerText);
+      statement_list.add(this.dictionaryEntry);
     });
     el.title = entry.examples.slice(0,3).join("&#13;");
     el.innerText = entry.function;

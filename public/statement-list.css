@@ -57,3 +57,8 @@
 #statement-list .statement .del {
   order: 3;
 }
+
+#statement-list .var {
+  font-weight: bold;
+  font-family: monospace;
+}
