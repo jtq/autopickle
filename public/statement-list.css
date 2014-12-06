@@ -8,14 +8,12 @@
 }
 
 #statement-list li {
-  padding: 0.25em;
-  overflow: auto;
-  height: 18px;
   border: 1px solid transparent;
-}
-
-#statement-list li:hover {
-  border: 1px dashed #8080ff;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  height: 1.25em;
+  margin: 0.25em 0;
 }
 
 #statement-list li.sortable-dragging {
@@ -26,12 +24,31 @@
 	border: 1px dashed #8080ff;
 }
 
+#statement-list .statement .label {
+  border: 1px solid transparent;
+  margin: -0.1em 0.25em;
+  padding: 0.25em;
+  order: 2;
+  flex-grow: 1;
+}
+
+#statement-list .statement:hover .label {
+  border: 1px dashed #8080ff;
+}
+
+#statement-list .statement .handle {
+  order: 1;
+  border: 1px solid #8080ff;
+  background-color: #f0f0ff;
+  width: 1em;
+  text-align: center;
+  cursor: ns-resize;
+}
+
 #statement-list .statement .del {
+  order: 3;
   border: 1px solid #ff0000;
   background-color: #ff8080;
-  padding: 0 0.25em;
-  margin: 0 0 0 1em;
-  display: inline-block;
-  font-family: monospace;
-  float: right;
+  width: 1em;
+  text-align: center;
 }

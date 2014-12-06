@@ -20,7 +20,9 @@ var statement_list = {
   	  for(var i=0; i<this.statements.length; i++) {
   	    container.append(this.render_statement(this.statements[i], i));
   	  }
-  	  container.sortable().bind('sortupdate', function() {
+  	  container.sortable({
+        handle: '.handle'
+      }).bind('sortupdate', function() {
   	  	self.statements = [];
         container.find('.statement').each(function() {
           self.statements.push(this.statement);
@@ -39,6 +41,9 @@ var statement_list = {
   	var el = document.createElement('li');
   	el.statement = statement;
   	el.className = "statement";
+
+  	var label = document.createElement("span");
+  	label.className = "label";
   	var prefix = "And";
   	if(index === 0) {
   		prefix = "When";
@@ -46,7 +51,13 @@ var statement_list = {
   	else if(index === this.statements.length-1) {
   		prefix = "Then";
   	}
-  	el.innerText = prefix + " " + statement;
+  	label.innerText = prefix + " " + statement;
+  	el.appendChild(label);
+
+  	var handle = document.createElement("span");
+  	handle.className = "handle";
+  	handle.innerHTML = "&#11021;";
+	el.appendChild(handle);
 
   	var del = document.createElement("span");
   	del.className = "del";
@@ -54,8 +65,8 @@ var statement_list = {
   	del.addEventListener('click', function(e) {
       self.remove(index);
   	});
-
   	el.appendChild(del);
+
   	return el;
   }
 };
