@@ -9,11 +9,18 @@
 
 #statement-list li {
   border: 1px solid transparent;
+  height: 1.25em;
+  margin: 0.25em 0;
+}
+
+#statement-list li.list-title {
+	font-weight: bold;
+}
+
+#statement-list li.statement {
   display: flex;
   flex-flow: row nowrap;
   align-items: stretch;
-  height: 1.25em;
-  margin: 0.25em 0;
 }
 
 #statement-list li.sortable-dragging {
@@ -36,12 +43,16 @@
   border: 1px dashed #8080ff;
 }
 
+#statement-list .statement .handle,
+#statement-list .statement .del {
+  width: 1em;
+  text-align: center;
+}
+
 #statement-list .statement .handle {
   order: 1;
   border: 1px solid #8080ff;
   background-color: #f0f0ff;
-  width: 1em;
-  text-align: center;
   cursor: ns-resize;
 }
 
@@ -49,6 +60,5 @@
   order: 3;
   border: 1px solid #ff0000;
   background-color: #ff8080;
-  width: 1em;
-  text-align: center;
+  font-family: monospace;
 }

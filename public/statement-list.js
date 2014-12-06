@@ -14,14 +14,15 @@ var statement_list = {
   render: function() {
   	var self = this;
   	var container = $('#statement-list').first().sortable('destroy');
-  	container.empty();
+  	container.find(".statement").remove();
   	if(this.statements.length) {
   	  container.show();
   	  for(var i=0; i<this.statements.length; i++) {
   	    container.append(this.render_statement(this.statements[i], i));
   	  }
   	  container.sortable({
-        handle: '.handle'
+        handle: '.handle',
+        items: ':not(.list-title)'
       }).bind('sortupdate', function() {
   	  	self.statements = [];
         container.find('.statement').each(function() {
@@ -56,7 +57,7 @@ var statement_list = {
 
   	var handle = document.createElement("span");
   	handle.className = "handle";
-  	handle.innerHTML = "&#11021;";
+  	handle.innerHTML = "&diams;";
 	el.appendChild(handle);
 
   	var del = document.createElement("span");
