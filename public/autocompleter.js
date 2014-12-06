@@ -9,12 +9,20 @@ var autocompleter = {
         data: { "query":value }
       }).done(function(data) {
         if(data.length > 0) {
-          var html = "", $input = $('#input');
+          var container = $("#autocomplete").empty();
+          var $input = $('#input');
           for(var i=0; i<data.length; i++) {
-            html += self.format_autocomplete_entry(data[i]);
+            container.append(self.format_autocomplete_entry(data[i]));
           };
-          html += '<li class="item new" onclick="statement_list.new();" title="Create a new command and add it to this test">[Add new command]</li>'
-          $("#autocomplete").html(html).attr('top', $input.attr('bottom')).show();
+          var new_cmd_el = document.createElement("li");
+          new_cmd_el.className = "item new"
+          new_cmd_el.addEventListener('click', function(e) {
+            statement_list.new();
+          });
+          new_cmd_el.title="Create a new command and add it to this test";
+          new_cmd_el.innerText = "[Add new command]";
+          container.append(new_cmd_el);
+          container.attr('top', $input.attr('bottom')).show();
         }
         else {
           self.clear_popup();
@@ -30,7 +38,16 @@ var autocompleter = {
   },
 
   format_autocomplete_entry: function(entry) {
-    return '<li class="item" onclick="statement_list.add(this.innerText);" title="'+entry.examples.slice(0,3).join("&#13;").replace(/"/g, '&quot;')+'">'+entry.function.replace(/\{([^}]+)\}/g, '<span class="var">$1</span>')+'</li>';
+    var el = document.createElement("li");
+    el.className = "item";
+    el.addEventListener('click', function(e) {
+      statement_list.add(this.innerText);
+    });
+    el.title = entry.examples.slice(0,3).join("&#13;");
+    el.innerText = entry.function;
+    el.innerHTML = el.innerHTML.replace(/\{([^}]+)\}/g, '<span class="var">$1</span>');
+
+    return el;
   }
 
 };
