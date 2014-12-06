@@ -1,6 +1,13 @@
 var statement_list = {
   statements: [],
 
+  new: function() {
+  	var new_command = prompt("Create a new command for use in this test", "Please type your new command here");
+  	if(new_command) {
+      this.add(new_command+"*");
+    }
+  },
+
   add: function(command_str) {
     this.statements.push(command_str);
     this.render();

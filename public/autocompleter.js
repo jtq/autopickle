@@ -13,6 +13,7 @@ var autocompleter = {
           for(var i=0; i<data.length; i++) {
             html += self.format_autocomplete_entry(data[i]);
           };
+          html += '<li class="item new" onclick="statement_list.new();" title="Create a new command and add it to this test">[Add new command]</li>'
           $("#autocomplete").html(html).attr('top', $input.attr('bottom')).show();
         }
         else {
