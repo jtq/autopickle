@@ -1,11 +1,14 @@
-require 'sinatra'
-require './autopickle'
+root_dir = File.dirname(__FILE__);
 
-gherkin_root_dir = "/scratch/WS/jason/radio-site/cucumberTest/watir/features"
+require 'sinatra'
+require File.join(root_dir, 'autopickle')
+
+
+gherkin_root_dir = "/home/jamesp/source/radio-site/cucumberTest/watir/features"
 dic = GherkinDictionary.new(gherkin_root_dir)
 
 get '/' do
-  File.read(File.join('public', 'index.html'))
+  File.read(File.join(root_dir, 'public', 'index.html'))
 end
 
 get '/all', :provides => "text/plain" do
@@ -17,5 +20,5 @@ get '/autocomplete', :provides => :json do
 end
 
 get '/assets/:file' do |file|
-  send_file File.join('public', file)
+  send_file File.join(root_dir, 'public', file)
 end

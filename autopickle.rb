@@ -133,7 +133,7 @@ end
 
 
 if(ARGV[0])
-	gherkin_root_dir = "/scratch/WS/jason/radio-site/cucumberTest/watir/features"
+	gherkin_root_dir = "/home/jamesp/source/radio-site/cucumberTest/watir/features"
 	dictionary = GherkinDictionary.new(gherkin_root_dir)
 	results = dictionary.find_terms(ARGV[0])
 	if results.length == 0
