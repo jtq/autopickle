@@ -1,11 +1,10 @@
 root_dir = File.dirname(__FILE__);
 
 require 'sinatra'
+require File.join(root_dir, 'local-config')
 require File.join(root_dir, 'autopickle')
 
-
-gherkin_root_dir = "/home/jamesp/source/radio-site/cucumberTest/watir/features"
-dic = GherkinDictionary.new(gherkin_root_dir)
+dic = GherkinDictionary.new(GHERKIN_ROOT_DIR)
 
 get '/' do
   File.read(File.join(root_dir, 'public', 'index.html'))

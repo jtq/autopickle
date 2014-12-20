@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
 
+root_dir = File.dirname(__FILE__);
+
 require 'json'
 
 class GherkinFunction
@@ -11,8 +13,9 @@ class GherkinFunction
 		@pattern = pattern
 		names = params.is_a?(Array) ? params : params.split(/\s*,\s*/)
 		backrefs = pattern.scan(backref_pattern).to_a.flatten
-		@params = Hash[backrefs.zip(names)]
-		@function = @pattern.gsub(/^\^|\$$/, '').downcase.gsub(backref_pattern, Hash[@params.map{|k,v| [k,'{'+v+'}'] } ])
+		@params = backrefs.zip(names)
+		#@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').downcase.gsub(backref_pattern, Hash[@params.map{|pair| [pair[0],'{'+pair[1]+'}'] } ]))
+		@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').downcase.gsub(backref_pattern, "%s") % names)
 		@examples = []
 	end
 
@@ -22,6 +25,17 @@ class GherkinFunction
 
 	def matches_function(str)
 		return function.include? str.downcase
+	end
+
+	def unescape_regex_special_chars(str)
+		map = Hash.new { |hash,key| key } # simple trick to return key if there is no value in hash
+		map['t'] = "\t"
+		map['n'] = "\n"
+		map['r'] = "\r"
+		map['f'] = "\f"
+		map['v'] = "\v"
+
+		return str.gsub(/\\(.)/){ map[$1] }
 	end
 
 	def to_s
@@ -133,8 +147,8 @@ end
 
 
 if(ARGV[0])
-	gherkin_root_dir = "/home/jamesp/source/radio-site/cucumberTest/watir/features"
-	dictionary = GherkinDictionary.new(gherkin_root_dir)
+	require File.join(root_dir, 'local-config')
+	dictionary = GherkinDictionary.new(GHERKIN_ROOT_DIR)
 	results = dictionary.find_terms(ARGV[0])
 	if results.length == 0
 		puts " -- No results found -- "
