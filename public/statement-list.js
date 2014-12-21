@@ -70,12 +70,12 @@ var statement_list = {
   	label.className = "label";
   	var prefix = "And";
   	if(index === 0) {
-  		prefix = "When";
+  		prefix = "Given";
   	}
   	else if(index === this.statements.length-1) {
   		prefix = "Then";
   	}
-  	label.innerText = prefix + " " + this.interpolate(statement);
+  	label.innerText = "&nbsp;&nbsp;" + prefix + " " + this.interpolate(statement);
   	label.innerHTML = label.innerText.replace(/\{([^}]+)\}/g, '<span class="var">$1</span>');
   	el.appendChild(label);
 
