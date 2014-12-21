@@ -14,8 +14,7 @@ class GherkinFunction
 		names = params.is_a?(Array) ? params : params.split(/\s*,\s*/)
 		backrefs = pattern.scan(backref_pattern).to_a.flatten
 		@params = backrefs.zip(names)
-		#@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').downcase.gsub(backref_pattern, Hash[@params.map{|pair| [pair[0],'{'+pair[1]+'}'] } ]))
-		@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').downcase.gsub(backref_pattern, "%s") % names)
+		@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').downcase.gsub(backref_pattern, "%s") % names.map{|n| '{'+n+'}' })
 		@examples = []
 	end
 
@@ -24,7 +23,7 @@ class GherkinFunction
 	end
 
 	def matches_function(str)
-		return function.include? str.downcase
+		return @function.include? str.downcase
 	end
 
 	def unescape_regex_special_chars(str)
@@ -58,6 +57,7 @@ class GherkinFunction
 		end
 		return help
 	end
+
 end
 
 class GherkinDictionary
@@ -137,11 +137,15 @@ class GherkinDictionary
 	end
 
 	def to_s
-		return @terms.map { |term| term.to_s }.join(",\n")
+		return @terms.map { |term| term.to_s }.join("\n")
 	end
 
 	def to_json
 		return '[' + @terms.map { |term| term.to_json }.join(",\n") + ']'
+	end
+
+	def help
+		return @terms.map { |term| term.help }.join("\n")
 	end
 end
 
@@ -152,9 +156,15 @@ if(ARGV[0])
 	results = dictionary.find_terms(ARGV[0])
 	if results.length == 0
 		puts " -- No results found -- "
-	elsif results.length == 1
-		puts results[0].help
+	elsif !ARGV[1].nil?
+		if ARGV[1] == '--json'
+			puts results.to_json
+		elsif ARGV[1] == '--raw'
+			puts results.to_s
+		elsif ARGV[1] == '--help'
+			puts results.help
+		end
 	else
-		puts ARGV[1] == '--json' ? results.to_json : results.to_s
+		puts results.to_s
 	end
 end
