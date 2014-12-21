@@ -14,7 +14,7 @@ class GherkinFunction
 		names = params.is_a?(Array) ? params : params.split(/\s*,\s*/)
 		backrefs = pattern.scan(backref_pattern).to_a.flatten
 		@params = backrefs.zip(names)
-		@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').downcase.gsub(backref_pattern, "%s") % names.map{|n| '{'+n+'}' })
+		@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').gsub(backref_pattern, "%s") % names.map{|n| '{'+n+'}' })
 		@examples = []
 	end
 
@@ -23,7 +23,7 @@ class GherkinFunction
 	end
 
 	def matches_function(str)
-		return @function.include? str.downcase
+		return @function.downcase.include? str.downcase
 	end
 
 	def unescape_regex_special_chars(str)
