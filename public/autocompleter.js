@@ -42,7 +42,7 @@ var autocompleter = {
     el.dictionaryEntry = entry;
     el.className = "item";
     el.addEventListener('click', function(e) {
-      statement_list.add(this.dictionaryEntry);
+      statement_list.add($.extend(true, {}, this.dictionaryEntry)); // Deep-copy autocomplete entry so multiple instances of the same commadn don't accidentally share state
     });
     el.title = entry.examples.slice(0,3).join("&#13;");
     el.innerText = entry.function;

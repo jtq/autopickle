@@ -1,8 +1,14 @@
 var statement_list = {
   statements: [],
+  container: null,
 
   init: function() {
-    var container = $('#statement-list').first();
+    container = $('#statement-list').first();
+    var self = this;
+    container.bind('sortupdate', function() {
+        self.update_statements_list_from_dom();
+        self.render();
+      });
     var title = container.find(".list-title")[0];
 
     if(!title) {
@@ -47,9 +53,16 @@ var statement_list = {
     this.render();
   },
 
+  update_statements_list_from_dom: function() {
+    this.statements = [];
+    var self = this;
+    container.find('.statement').each(function() {
+      self.statements.push(this.statement);
+    });
+  },
+
   render: function() {
   	var self = this;
-  	var container = $('#statement-list').first();
 
   	container.find(".statement").remove();
   	if(this.statements.length) {
@@ -60,11 +73,6 @@ var statement_list = {
   	  container.sortable({
         handle: '.handle',
         items: ':not(.list-title)'
-      }).bind('sortupdate', function() {
-  	  	self.statements = [];
-        container.find('.statement').each(function() {
-          self.statements.push(this.statement);
-        });
       });
   	}
   	else {
@@ -117,12 +125,12 @@ var statement_list = {
   },
 
   modify_variable_value: function(el) {
-    $el = $(el);
+    var $el = $(el);
     var item = $el.closest("li")[0];
     var new_value = null;
     if(item.statement) {
       var varname = $el.data("varname");
-      new_value = this.get_variable_value(statement, varname, el.innerText);
+      new_value = this.get_variable_value(item.statement, varname, el.innerText);
       item.statement.values[varname] = new_value || item.statement.values[varname];
     }
     else {
@@ -134,13 +142,13 @@ var statement_list = {
   },
 
   attach_event_handlers: function(el) {
-    var container = el ? $(el) : $('#statement-list li');
+    var list_item = el ? $(el) : $('#statement-list li');
     var self = this;
     var click_handler = function(e) {
       self.modify_variable_value(this);
     };
-    container.find(".var").off('click', click_handler);
-    container.find(".var").on('click', click_handler);
+    list_item.find(".var").off('click', click_handler);
+    list_item.find(".var").on('click', click_handler);
   },
 
   interpolate: function(label, statement) {
@@ -152,3 +160,5 @@ var statement_list = {
     label.innerHTML = label.innerText.replace(/\{([^\:]+)\:([^}]+)\}/g, '<span class="var" data-varname="$1">$2</span>');
   }
 };
+
+
