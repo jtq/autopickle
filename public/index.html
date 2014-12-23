@@ -7,9 +7,8 @@
     <script src="/assets/statement-list.js"></script>
     <link rel="stylesheet" href="/assets/statement-list.css" />
   </head>
-  <body>
+  <body onload="statement_list.init();">
     <ol id="statement-list" class="sortable">
-      <li class="list-title">Scenario:</li>
     </ol>
     <form id="autocomplete-wrapper">
       <input id="input" onkeyup="autocompleter.look_up(this.value);">

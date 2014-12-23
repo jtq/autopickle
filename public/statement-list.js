@@ -1,6 +1,20 @@
 var statement_list = {
   statements: [],
 
+  init: function() {
+    var container = $('#statement-list').first();
+    var title = container.find(".list-title")[0];
+
+    if(!title) {
+      var scenario_title = 'Scenario: <span class="var" data-varname="scenario_code">CODE001</span> - <span class="var" data-varname="scenario_description">Scenario description</span>';
+      var title_element = $('<li class="list-title" draggable="false">'+scenario_title+'</li>')[0];
+
+      container.append(title_element);
+
+      this.attach_event_handlers(title_element);
+    }
+  },
+
   new: function() {
   	var new_command = prompt("Create a new command for use in this test", "Please type your new command here");
   	if(new_command) {
@@ -19,9 +33,8 @@ var statement_list = {
   	  var vars = command.function.match(/\{[^\}]+\}/g);
   	  command.values = {};
   	  for(var i=0; vars && i<vars.length; i++) {
-  	  	var varname = vars[i].slice(1, -1);
-  	  	var example = (command.examples && command.examples.length) ? "\r\nExample: "+command.examples[0] : "";
-  	  	command.values[varname] = prompt("Command: "+command.function+example+"\r\nPlease enter a value for variable "+varname);
+        var varname = vars[i].slice(1, -1);
+  	  	command.values[varname] = this.get_variable_value(command, varname, "");
   	  }
   	}
 
@@ -36,7 +49,8 @@ var statement_list = {
 
   render: function() {
   	var self = this;
-  	var container = $('#statement-list').first().sortable('destroy');
+  	var container = $('#statement-list').first();
+
   	container.find(".statement").remove();
   	if(this.statements.length) {
   	  container.show();
@@ -51,7 +65,6 @@ var statement_list = {
         container.find('.statement').each(function() {
           self.statements.push(this.statement);
         });
-        self.render();
       });
   	}
   	else {
@@ -75,14 +88,14 @@ var statement_list = {
   	else if(index === this.statements.length-1) {
   		prefix = "Then";
   	}
-  	label.innerText = "&nbsp;&nbsp;" + prefix + " " + this.interpolate(statement);
-  	label.innerHTML = label.innerText.replace(/\{([^}]+)\}/g, '<span class="var">$1</span>');
+  	this.interpolate(label, statement);
+    label.innerHTML = "&nbsp;&nbsp;" + prefix + " " + label.innerHTML;
   	el.appendChild(label);
 
   	var handle = document.createElement("img");
   	handle.className = "handle";
   	handle.src = "/assets/elevator.svg";
-	el.appendChild(handle);
+    el.appendChild(handle);
 
   	var del = document.createElement("img");
   	del.className = "del";
@@ -92,14 +105,50 @@ var statement_list = {
   	});
   	el.appendChild(del);
 
+    this.attach_event_handlers(el);
+
   	return el;
   },
 
-  interpolate: function(statement) {
-  	var result = statement.function;
+  get_variable_value: function(command, varname, default_value) {
+    var example = (command.examples && command.examples.length) ? "\r\nExample: "+command.examples[0] : "";
+    var input = prompt("Command: "+command.function+example+"\r\nPlease enter a value for variable "+varname, default_value)
+    return input == null ? default_value : input;
+  },
+
+  modify_variable_value: function(el) {
+    $el = $(el);
+    var item = $el.closest("li")[0];
+    var new_value = null;
+    if(item.statement) {
+      var varname = $el.data("varname");
+      new_value = this.get_variable_value(statement, varname, el.innerText);
+      item.statement.values[varname] = new_value || item.statement.values[varname];
+    }
+    else {
+      new_value = prompt("New Value", el.innerText);
+    }
+    el.innerText = new_value;
+
+    this.render();
+  },
+
+  attach_event_handlers: function(el) {
+    var container = el ? $(el) : $('#statement-list li');
+    var self = this;
+    var click_handler = function(e) {
+      self.modify_variable_value(this);
+    };
+    container.find(".var").off('click', click_handler);
+    container.find(".var").on('click', click_handler);
+  },
+
+  interpolate: function(label, statement) {
+    var raw = statement.function;
+    label.innerText = raw;
   	for(var key in statement.values) {
-      result = result.replace('{'+key+'}', '{'+statement.values[key]+'}');
+      label.innerText = label.innerText.replace('{'+key+'}', '{'+key+':'+statement.values[key]+'}');
   	}
-  	return result;
+    label.innerHTML = label.innerText.replace(/\{([^\:]+)\:([^}]+)\}/g, '<span class="var" data-varname="$1">$2</span>');
   }
 };
