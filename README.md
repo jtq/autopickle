@@ -20,7 +20,7 @@ You can also specify a second parameter to control output:
 | Parameter | Result        |
 | --------- | ------------- |
 | --raw     | Raw list of commands (with backreference variable-names helpfully interpolated) |
-| --help    | Like `--raw`, but including examples of usage drawn from your existing .feature files |
+| --help    | Like `--raw`, but including examples of usage for any commands containing embedded variables/backreferences, drawn from your existing .feature files |
 | --json    | JSON output of each command, including the original pattern, the interpolated command-name, embedded params, etc|
 
 ### From a web interface ###
