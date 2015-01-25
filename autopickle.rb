@@ -4,6 +4,18 @@ root_dir = File.dirname(__FILE__);
 
 require 'json'
 
+class LangConfig
+	attr_accessor :step_pattern, :param_delimiter_pattern, :step_fileglob, :feature_fileglob
+
+	def initialize(step_pattern, param_delimiter_pattern, step_fileglob, feature_fileglob)
+		@step_pattern = step_pattern
+		@param_delimiter_pattern = param_delimiter_pattern
+		@step_fileglob = step_fileglob
+		@feature_fileglob = feature_fileglob
+	end
+
+end
+
 class GherkinFunction
 
 	attr_accessor :pattern, :function, :params, :examples
@@ -11,7 +23,7 @@ class GherkinFunction
 	def initialize(pattern, params)
 		backref_pattern = /(?<!\\)(\([^?][^)]+[^\\]\))/
 		@pattern = pattern
-		names = params.is_a?(Array) ? params : params.split(/\s*,\s*/)
+		names = params.is_a?(Array) ? params : params.split(CONFIG.param_delimiter_pattern)
 		backrefs = pattern.scan(backref_pattern).to_a.flatten
 		@params = backrefs.zip(names)
 		@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').gsub(backref_pattern, "%s") % names.map{|n| '{'+n+'}' })
@@ -79,14 +91,14 @@ class GherkinDictionary
 
 	def init_from_path(path)
 		#files = Dir[path+"/**/errCode.rb"]
-		files = Dir[path+"/**/*.rb"]
+		files = Dir[path+CONFIG.step_fileglob]
 		files.each { |file| load_from_file(file) }
 	end
 
 	def load_from_file(file)
 		File.open(file).each do |line|
 			# When(/^I type link in "(.*?)"$/) do |arg1|
-			if matches = line.match(/^(given|when|then|and|but)\s*\(\s*\/(\^?[^$]*\$?)\/\s*\)\s*(?:(?:do|{)\s*\|?([^|]*)\|?)/i)
+			if matches = line.match(CONFIG.step_pattern)
 				@terms.push(GherkinFunction.new(matches[2], matches[3])) 
 			end
 		end
@@ -94,7 +106,7 @@ class GherkinDictionary
 
 	def load_examples_from_path(path)
 		#example_files = Dir[path+"/**/errCode.feature"]
-		example_files = Dir[path+"/**/*.feature"]
+		example_files = Dir[path+CONFIG.feature_fileglob]
 		example_files.each { |file|
 			load_examples_from_file(file)
 		}

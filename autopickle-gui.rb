@@ -1,8 +1,8 @@
 root_dir = File.dirname(__FILE__);
 
 require 'sinatra'
-require File.join(root_dir, 'local-config')
 require File.join(root_dir, 'autopickle')
+require File.join(root_dir, 'local-config')
 
 dic = GherkinDictionary.new(GHERKIN_ROOT_DIR)
 
