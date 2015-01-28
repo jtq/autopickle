@@ -41,7 +41,13 @@ var statement_list = {
   	  command.values = {};
   	  for(var i=0; vars && i<vars.length; i++) {
         var varname = vars[i].slice(1, -1);
-  	  	command.values[varname] = this.get_variable_value(command, varname, "");
+        var response = this.get_variable_value(command, varname, "");
+        if(response) {
+    	  	command.values[varname] = response;
+        }
+        else {
+          return false;
+        }
   	  }
   	}
 
@@ -135,7 +141,7 @@ var statement_list = {
       item.statement.values[varname] = new_value || item.statement.values[varname];
     }
     else {
-      new_value = prompt("New Value", el.innerText);
+      new_value = prompt("New Value", el.innerText) || el.innerText;
     }
     el.innerText = new_value;
 

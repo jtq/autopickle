@@ -36,7 +36,9 @@
     <div class="content-root">
       <div class="search-container">
         <h2>Choose commands</h2>
-        <p>Start typing keywords or describe what you'd like to do to see a list of matching commands already defined in the system.  If none match what you want, click <code>[Add new command]</code> and enter the new command you want the developers to implement.</p>
+        <p>Start typing keywords or describe a user-action to see a list of matching commands already defined in the product's codebase.  You can also get a <a href="/all" target="_blank">crib-sheet of all commands</a> currently implemented.</p>
+
+        <p>If no existing command matches what you want, click <code>[Add new command]</code> from the drop-down that appears, and enter the new command you want the developers to implement.</p>
         <form id="autocomplete-wrapper">
           <input id="input" onkeyup="autocompleter.look_up(this.value);">
           <ul id="autocomplete"></ul>
