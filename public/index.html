@@ -1,9 +1,9 @@
 <html>
   <head>
+    <link rel="stylesheet" href="/assets/styles.css" />
     <script src="/assets/jquery.min.js"></script>
     <script src="/assets/jquery.sortable.min.js"></script>
     <script src="/assets/autocompleter.js"></script>
-    <link rel="stylesheet" href="/assets/styles.css" />
     <link rel="stylesheet" href="/assets/autocompleter.css" />
     <script src="/assets/statement-list.js"></script>
     <link rel="stylesheet" href="/assets/statement-list.css" />
@@ -32,7 +32,7 @@
     });
     </script>
   </head>
-  <body onload="statement_list.init();">
+  <body onload="autocompleter.init();statement_list.init();">
     <div class="content-root">
       <div class="search-container">
         <h2>Choose commands</h2>
@@ -40,7 +40,7 @@
 
         <p>If no existing command matches what you want, click <code>[Add new command]</code> from the drop-down that appears, and enter the new command you want the developers to implement.</p>
         <form id="autocomplete-wrapper">
-          <input id="input" onkeyup="autocompleter.look_up(this.value);">
+          <input id="input">
           <ul id="autocomplete"></ul>
         </form>
       </div>

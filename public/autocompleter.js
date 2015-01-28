@@ -1,4 +1,17 @@
 var autocompleter = {
+
+  init: function() {
+    $("#input").on("keyup", function(event) {
+      autocompleter.look_up(this.value);
+    }).on("keydown", function(event) {
+      console.log(event);
+      if(event.keyCode === 13) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    });
+  },
+
   look_up: function(value) {
     if(value == "") {
       this.clear_popup();
