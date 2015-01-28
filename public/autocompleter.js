@@ -8,25 +8,24 @@ var autocompleter = {
       $.ajax("/autocomplete", {
         data: { "query":value }
       }).done(function(data) {
+        var container = $("#autocomplete").empty();
         if(data.length > 0) {
-          var container = $("#autocomplete").empty();
           var $input = $('#input');
           for(var i=0; i<data.length; i++) {
             container.append(self.format_autocomplete_entry(data[i]));
           };
-          var new_cmd_el = document.createElement("li");
-          new_cmd_el.className = "item new"
-          new_cmd_el.addEventListener('click', function(e) {
-            statement_list.new();
-          });
-          new_cmd_el.title="Create a new command and add it to this test";
-          new_cmd_el.innerText = "[Add new command]";
-          container.append(new_cmd_el);
-          container.attr('top', $input.attr('bottom')).show();
         }
-        else {
-          self.clear_popup();
-        }
+
+        var new_cmd_el = document.createElement("li");
+        new_cmd_el.className = "item new"
+        new_cmd_el.addEventListener('click', function(e) {
+          statement_list.new();
+        });
+        new_cmd_el.title="Create a new command and add it to this test";
+        new_cmd_el.innerText = "[Add new command]";
+        container.append(new_cmd_el);
+        container.attr('top', $input.attr('bottom')).show();
+
       }).fail(function() {
         console.log("AJAX fail:", arguments);
       });
@@ -36,6 +35,8 @@ var autocompleter = {
   clear_popup: function() {
     $("#autocomplete").hide();
   },
+
+
 
   format_autocomplete_entry: function(entry) {
     var el = document.createElement("li");
