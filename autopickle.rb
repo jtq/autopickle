@@ -21,7 +21,7 @@ class GherkinFunction
 	attr_accessor :pattern, :function, :params, :examples
 
 	def initialize(pattern, params)
-		backref_pattern = /(?<!\\)(\([^?][^)]+[^\\]\))/
+		backref_pattern = /(?<!\\)(\([^?][^)]*[^\\]\))/
 		@pattern = pattern
 		names = params.is_a?(Array) ? params : params.split(CONFIG.param_delimiter_pattern)
 		backrefs = pattern.scan(backref_pattern).to_a.flatten
