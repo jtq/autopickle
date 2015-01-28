@@ -21,8 +21,9 @@ var statement_list = {
     }
   },
 
-  new: function() {
-  	var new_command = prompt("Create a new command for use in this test", "Please type your new command here");
+  new: function(suggestion) {
+    suggestion = suggestion || "Please type your new command here";
+  	var new_command = prompt("Create a new command for use in this test", suggestion);
   	if(new_command) {
       this.add(new_command+"*");
     }
