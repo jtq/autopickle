@@ -3,16 +3,54 @@
     <script src="/assets/jquery.min.js"></script>
     <script src="/assets/jquery.sortable.min.js"></script>
     <script src="/assets/autocompleter.js"></script>
+    <link rel="stylesheet" href="/assets/styles.css" />
     <link rel="stylesheet" href="/assets/autocompleter.css" />
     <script src="/assets/statement-list.js"></script>
     <link rel="stylesheet" href="/assets/statement-list.css" />
+    <script type="text/javascript">
+    function select_all(el) {
+      if (window.getSelection && document.createRange) {
+          var sel = window.getSelection();
+          var range = document.createRange();
+          range.selectNode(el);
+          sel.removeAllRanges();
+          sel.addRange(range);
+      }
+      else if (document.selection && document.body.createTextRange) {
+          var textRange = document.body.createTextRange();
+          textRange.moveToElementText(el);
+          textRange.select();
+      }
+      else {
+        alert("Sorry - this functionality is not supported in your browser.\n\nPlease use the mouse to select the scenario text maually");
+      }
+    }
+    $(document).ready(function() {
+      $(".select-button").click(function() {
+        select_all($("#statement-list")[0]);
+      });
+    });
+    </script>
   </head>
   <body onload="statement_list.init();">
-    <ol id="statement-list" class="sortable">
-    </ol>
-    <form id="autocomplete-wrapper">
-      <input id="input" onkeyup="autocompleter.look_up(this.value);">
-      <ul id="autocomplete"></ul>
-    </form>
+    <div class="content-root">
+      <div class="search-container">
+        <h2>Choose commands</h2>
+        <p>Start typing keywords or describe what you'd like to do to see a list of matching commands already defined in the system.  If none match what you want, click <code>[Add new command]</code> and enter the new command you want the developers to implement.</p>
+        <form id="autocomplete-wrapper">
+          <input id="input" onkeyup="autocompleter.look_up(this.value);">
+          <ul id="autocomplete"></ul>
+        </form>
+      </div>
+
+      <div class="scenario-container">
+        <h2>Build your scenario</h2>
+        <p>Your chosen commands appear here - drag-and-drop items to reorder, and click the scenario name and description to give your scenario meaningful values.  Once you're happy with your scenario, click the "<code>Select scenario</code>" button (or manually select the scenario text with your mouse) and cut and paste it into your feature tracker or testing code.</p>
+        <button class="select-button show-if-statements">Select scenario</button>
+        <ol id="statement-list" class="sortable show-if-statements">
+        </ol>
+        <br />
+      </div>
+    </div>
   </body>
 </html>

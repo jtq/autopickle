@@ -66,7 +66,7 @@ var statement_list = {
 
   	container.find(".statement").remove();
   	if(this.statements.length) {
-  	  container.show();
+  	  $('.show-if-statements').show();
   	  for(var i=0; i<this.statements.length; i++) {
   	    container.append(this.render_statement(this.statements[i], i));
   	  }
@@ -76,7 +76,7 @@ var statement_list = {
       });
   	}
   	else {
-  		container.hide();
+  		$('.show-if-statements').hide();
   	}
   },
 

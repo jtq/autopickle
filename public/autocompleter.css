@@ -30,9 +30,3 @@
   font-weight: bold;
   font-family: monospace;
 }
-
-#test {
-  float: right;
-  border: 1px solid #80ff80;
-  margin: 0 2em;
-}

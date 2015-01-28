@@ -4,6 +4,8 @@ require 'sinatra'
 require File.join(root_dir, 'autopickle')
 require File.join(root_dir, 'local-config')
 
+set :bind, '0.0.0.0'
+
 dic = GherkinDictionary.new(GHERKIN_ROOT_DIR)
 
 get '/' do

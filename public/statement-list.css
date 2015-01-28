@@ -1,10 +1,8 @@
 #statement-list {
-  float: right;
   border: 1px solid #8080ff;
   background-color: #f0f0ff;
   padding: 1em;
   list-style-type: none;
-  display: none;
 }
 
 #statement-list li {
