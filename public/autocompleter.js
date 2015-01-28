@@ -21,6 +21,7 @@ var autocompleter = {
         new_cmd_el.className = "item new"
         new_cmd_el.addEventListener('click', function(e) {
           statement_list.new(value);
+          self.reset();
         });
         new_cmd_el.title="Create a new command and add it to this test";
         new_cmd_el.innerText = "[Add new command]";
@@ -37,14 +38,20 @@ var autocompleter = {
     $("#autocomplete").hide();
   },
 
-
+  reset: function() {
+    $('#input').val("");
+    this.clear_popup();
+    $('#input').focus();
+  },
 
   format_autocomplete_entry: function(entry) {
+    var self = this;
     var el = document.createElement("li");
     el.dictionaryEntry = entry;
     el.className = "item";
     el.addEventListener('click', function(e) {
       statement_list.add($.extend(true, {}, this.dictionaryEntry)); // Deep-copy autocomplete entry so multiple instances of the same commadn don't accidentally share state
+      self.reset();
     });
     el.title = entry.examples.slice(0,3).join("&#13;");
     el.innerText = entry.function;
