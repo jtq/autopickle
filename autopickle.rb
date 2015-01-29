@@ -21,12 +21,13 @@ class GherkinFunction
 	attr_accessor :pattern, :function, :params, :examples
 
 	def initialize(pattern, params)
+		params.strip!	# Get rid of any leading/trailing whitespace that's hard to exclude using config regexps
 		backref_pattern = /(?<!\\)(\([^?][^)]*[^\\]\))/
 		@pattern = pattern
 		names = params.is_a?(Array) ? params : params.split(CONFIG.param_delimiter_pattern)
 		backrefs = pattern.scan(backref_pattern).to_a.flatten
 		@params = backrefs.zip(names)
-		@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').gsub(backref_pattern, "%s") % names.map{|n| '{'+n+'}' })
+		@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').gsub("%", "%%").gsub(backref_pattern, "%s") % names.map{|n| '{'+n+'}' })
 		@examples = []
 	end
 
