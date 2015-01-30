@@ -56,8 +56,8 @@ class GherkinFunction
 
 	def to_json
 		return "{
-  \"pattern\":\"#{@pattern.gsub(/\\([^\\])/, '\\\\\\\\\1').gsub('"', '\\"')}\",
-  \"function\":\"#{@function.gsub(/\\([^\\])/, '\1').gsub('"', '\\"')}\",
+  \"pattern\":#{JSON.generate(@pattern, quirks_mode: true)},
+  \"function\":#{JSON.generate(@function, quirks_mode: true)},
   \"params\":#{JSON.dump(@params)},
   \"examples\":#{@examples}
 }"
