@@ -97,11 +97,8 @@ class GherkinDictionary
 	end
 
 	def load_from_file(file)
-		File.open(file).each do |line|
-			# When(/^I type link in "(.*?)"$/) do |arg1|
-			if matches = line.match(CONFIG.step_pattern)
-				@terms.push(GherkinFunction.new(matches[2], matches[3])) 
-			end
+		File.read(file).scan(CONFIG.step_pattern) do |command, params|
+			@terms.push(GherkinFunction.new(command, params)) 
 		end
 	end
 
