@@ -66,7 +66,7 @@ var autocompleter = {
       statement_list.add($.extend(true, {}, this.dictionaryEntry)); // Deep-copy autocomplete entry so multiple instances of the same commadn don't accidentally share state
       self.reset();
     });
-    el.title = entry.examples.slice(0,3).join("&#13;");
+    el.title = entry.examples.slice(0,3).join("\n");
     el.innerText = entry.function;
     el.innerHTML = el.innerHTML.replace(/\{([^}]+)\}/g, '<span class="var">$1</span>');
 
