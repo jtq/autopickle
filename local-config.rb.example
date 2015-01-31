@@ -1,7 +1,10 @@
 GHERKIN_ROOT_DIR = "/path/to/your/cucumber/tests/directory"
 
 # Ruby
-CONFIG = LangConfig.new(/^\s*(?:given|when|then|and|but)\s*\(?\s*\/(\^?[^$\n]*\$?)\/\s*\)?\s*(?:(?:do|{)\s*\|?([^|\n]*)\|?)/i, /\s*,\s*/, "/**/*.rb", "/**/*.feature")
+#CONFIG = LangConfig.new(/^\s*(?:given|when|then|and|but)\s*\(?\s*\/(\^?[^$\n]*\$?)\/\s*\)?\s*(?:(?:do|{)\s*\|?([^|\n]*)\|?)/i, nil, /\s*,\s*/, "/**/*.rb", "/**/*.feature")
 
 # Scala
-CONFIG = LangConfig.new(/^\s*(?:given|when|then|and|but)\s*\(\s*"""(\^?[^$\n]*\$?)"""\s*\)\s*(?:{\s*\(?\s*([^=\n]*)\s*\)?\s*=>)/i, /\s*\:\s*String\s*,?\s*/, "/**/*.scala", "/**/*.feature")
+#CONFIG = LangConfig.new(/^\s*(?:given|when|then|and|but)\s*\(\s*"""(\^?[^$\n]*\$?)"""\s*\)\s*(?:{\s*\(?\s*([^=\n]*)\s*\)?\s*=>)/i, nil, /\s*\:\s*String\s*,?\s*/, "/**/*.scala", "/**/*.feature")
+
+# Java
+#CONFIG = LangConfig.new(/^\s*@(?:given|when|then|and|but)\s*\(\s*"(\^?[^\$\n]*\$?)"\s*\)\s*\r?\n(?:\s*@[^\r\n]+\r?\n)*[^\(]+\(\s*[^\s]+\s*([^\)]*)\)\s*{/i, "\\", /\s*,\s*[^\s]+\s+/, "/**/*.java", "/**/*.feature")

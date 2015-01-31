@@ -5,10 +5,11 @@ root_dir = File.dirname(__FILE__);
 require 'json'
 
 class LangConfig
-	attr_accessor :step_pattern, :param_delimiter_pattern, :step_fileglob, :feature_fileglob
+	attr_accessor :step_pattern, :escape_char, :param_delimiter_pattern, :step_fileglob, :feature_fileglob
 
-	def initialize(step_pattern, param_delimiter_pattern, step_fileglob, feature_fileglob)
+	def initialize(step_pattern, escape_char, param_delimiter_pattern, step_fileglob, feature_fileglob)
 		@step_pattern = step_pattern
+		@escape_char = escape_char
 		@param_delimiter_pattern = param_delimiter_pattern
 		@step_fileglob = step_fileglob
 		@feature_fileglob = feature_fileglob
@@ -98,6 +99,10 @@ class GherkinDictionary
 
 	def load_from_file(file)
 		File.read(file).scan(CONFIG.step_pattern) do |command, params|
+			if CONFIG.escape_char
+				command.gsub!("#{CONFIG.escape_char}#{CONFIG.escape_char}", CONFIG.escape_char)
+			end
+
 			@terms.push(GherkinFunction.new(command, params)) 
 		end
 	end
