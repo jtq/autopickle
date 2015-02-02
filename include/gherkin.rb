@@ -99,8 +99,12 @@ class GherkinDictionary
 
 	def load_examples_from_file(file)
 		File.open(file).each do |line|
-			if matches = line.match(/^\s*(?:given|when|then|and|but)\s*(.*)/i)
-				set_example(matches[1])
+			begin
+				if matches = line.match(/^\s*(?:given|when|then|and|but)\s*(.*)/i)
+					set_example(matches[1])
+				end
+			rescue ArgumentError
+				# Likely caused by a charset/encoding problem.  Skip the example for now, but come back to this later and try to recover gracefully from it.
 			end
 		end
 	end
