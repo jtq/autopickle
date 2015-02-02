@@ -1,7 +1,7 @@
 root_dir = File.dirname(__FILE__);
 
-require 'sinatra'
 require File.join(root_dir, 'autopickle')
+require 'sinatra'
 
 set :bind, '0.0.0.0'
 

@@ -6,7 +6,7 @@ class GherkinFunction
 		params.strip!	# Get rid of any leading/trailing whitespace that's hard to exclude using config regexps
 		backref_pattern = /(?<!\\)(\([^?][^)]*[^\\]\))/
 		@pattern = pattern
-		names = params.is_a?(Array) ? params : params.split(CONFIG.param_delimiter_pattern)
+		names = params.is_a?(Array) ? params : params.split($lang.param_delimiter_pattern)
 		backrefs = pattern.scan(backref_pattern).to_a.flatten
 		@params = backrefs.zip(names)
 		@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').gsub("%", "%%").gsub(backref_pattern, "%s") % names.map{|n| '{'+n+'}' })
@@ -75,14 +75,14 @@ class GherkinDictionary
 
 	def init_from_path(path)
 		#files = Dir[path+"/**/errCode.rb"]
-		files = Dir[path+CONFIG.step_fileglob]
+		files = Dir[path+$lang.step_fileglob]
 		files.each { |file| load_from_file(file) }
 	end
 
 	def load_from_file(file)
-		File.read(file).scan(CONFIG.step_pattern) do |command, params|
-			if CONFIG.escape_char
-				command.gsub!("#{CONFIG.escape_char}#{CONFIG.escape_char}", CONFIG.escape_char)
+		File.read(file).scan($lang.step_pattern) do |command, params|
+			if $lang.escape_char
+				command.gsub!("#{$lang.escape_char}#{$lang.escape_char}", $lang.escape_char)
 			end
 
 			@terms.push(GherkinFunction.new(command, params)) 
@@ -91,7 +91,7 @@ class GherkinDictionary
 
 	def load_examples_from_path(path)
 		#example_files = Dir[path+"/**/errCode.feature"]
-		example_files = Dir[path+CONFIG.feature_fileglob]
+		example_files = Dir[path+$lang.feature_fileglob]
 		example_files.each { |file|
 			load_examples_from_file(file)
 		}
