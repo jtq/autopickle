@@ -19,7 +19,7 @@ if File.exists? config_file
 end
 
 # Parse CLI params (any collisions override values defined in local-config file)
-OptionParser.new do |opts|
+$opts = OptionParser.new do |opts|
   opts.on('-d', '--directory [GHERKIN_PATH]', "Path to the directory containing your cucumber step definitions and feature files") do |val|
     $gherkin_root_dir = val
     if !Dir.exists? $gherkin_root_dir
@@ -44,7 +44,9 @@ OptionParser.new do |opts|
     $cli_output_format = "examples"
   end
 
-end.parse!
+end
+
+$opts.parse!
 
 if $gherkin_root_dir.nil?
 	puts "Error: $gherkin_root_dir not set - either provide a --directory parameter or set a default value in local-config.rb"
@@ -63,16 +65,20 @@ $lang = $lang_config[$step_definition_lang]
 $dictionary = GherkinDictionary.new($gherkin_root_dir)
 
 if(ARGV[0])
-	results = $dictionary.find_terms(ARGV[0])
-	if results.length == 0
-		puts " -- No results found -- "
-	else
-		if $cli_output_format == 'json'
-			puts results.to_json
-		elsif $cli_output_format == 'raw'
-			puts results.to_s
-		elsif $cli_output_format == 'examples'
-			puts results.help
-		end
-	end
+  if(ARGV[0] == "--help")
+    puts $opts.help()
+  else
+    results = $dictionary.find_terms(ARGV[0])
+    if results.length == 0
+      puts " -- No results found -- "
+    else
+      if $cli_output_format == 'json'
+        puts results.to_json
+      elsif $cli_output_format == 'raw'
+        puts results.to_s
+      elsif $cli_output_format == 'examples'
+        puts results.help
+      end
+    end
+  end
 end
