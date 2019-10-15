@@ -11,8 +11,8 @@ class GherkinFunction
 		@pattern = pattern
 		names = params.is_a?(Array) ? params : params.split($lang.param_delimiter_pattern)
 		backrefs = pattern.scan(backref_pattern).to_a.flatten
-		if(backrefs.length < names.length)
-			names.concat(Array.new(backrefs.length-name.length, '?'))
+		if(backrefs.length > names.length)
+			names.concat(Array.new(backrefs.length-names.length, '?'))
 		end
 		@params = backrefs.zip(names)
 		@function = unescape_regex_special_chars(@pattern.gsub(/^\^|\$$/, '').gsub("%", "%%").gsub(backref_pattern, "%s") % names.map{|n| '{'+n+'}' })

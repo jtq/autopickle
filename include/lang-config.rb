@@ -13,7 +13,8 @@ class LangConfig
 end
 
 $lang_config = {
-	"ruby"	=> LangConfig.new(/^\s*(?:given|when|then|and|but)\s*\(?\s*\/(\^?[^$\n]*\$?)\/\s*\)?\s*(?:(?:do|{)\s*\|?([^|\n]*)\|?)/i, nil, /\s*,\s*/, "/**/*.rb", "/**/*.feature"),
-	"scala"	=> LangConfig.new(/^\s*(?:given|when|then|and|but)\s*\(\s*"""(\^?[^$\n]*\$?)"""\s*\)\s*(?:{\s*\(?\s*([^=\n]*)\s*\)?\s*=>)/i, nil, /\s*\:\s*String\s*,?\s*/, "/**/*.scala", "/**/*.feature"),
-	"java"	=> LangConfig.new(/^\s*@(?:given|when|then|and|but)\s*\(\s*"(\^?[^\$\n]*\$?)"\s*\)\s*\r?\n(?:\s*@[^\r\n]+\r?\n)*[^\(]+\(\s*[^\s]+\s*([^\)]*)\)\s*{/i, "\\", /\s*,\s*[^\s]+\s+/, "/**/*.java", "/**/*.feature")
+	"ruby"       => LangConfig.new(/^\s*(?:given|when|then|and|but)\s*\(?\s*\/(\^?[^$\n]*\$?)\/\s*\)?\s*(?:(?:do|{)\s*\|?([^|\n]*)\|?)/i, nil, /\s*,\s*/, "/**/*.rb", "/**/*.feature"),
+	"scala"      => LangConfig.new(/^\s*(?:given|when|then|and|but)\s*\(\s*"""(\^?[^$\n]*\$?)"""\s*\)\s*(?:{\s*\(?\s*([^=\n]*)\s*\)?\s*=>)/i, nil, /\s*\:\s*String\s*,?\s*/, "/**/*.scala", "/**/*.feature"),
+	"java"       => LangConfig.new(/^\s*@(?:given|when|then|and|but)\s*\(\s*"(\^?[^\$\n]*\$?)"\s*\)\s*\r?\n(?:\s*@[^\r\n]+\r?\n)*[^\(]+\(\s*[^\s]+\s*([^\)]*)\)\s*{/i, "\\", /\s*,\s*[^\s]+\s+/, "/**/*.java", "/**/*.feature"),
+	"javascript" => LangConfig.new(/^\s*(?:definestep|given|when|then|and|but)\s*\(\s*[\/'"](\^?[^$\n]*\$?)[\/'"][a-z]*\s*,\s*(?:function\s+)?(?:[a-z0-9_$]+\s+)?(?:\(\s*([^)]+)\s*\))?/i, nil, /\s*,\s*/, "/**/*.js", "/**/*.feature")
 }
