@@ -70,6 +70,7 @@ class GherkinDictionary
 		@terms = []
 		@files = []
 		@example_files = []
+		@functions = {}
 		if path_or_array.is_a?(Array)
 			@terms = path_or_array	# Construct new dictionary from an existing array of terms
 		elsif path_or_array.is_a?(String) && Dir.exists?(path_or_array)
@@ -80,15 +81,35 @@ class GherkinDictionary
 	end
 
 	def init_from_path(path)
-		#files = Dir[path+"/**/errCode.rb"]
 		files = Dir[path+$lang.step_fileglob]
-		files.each { |file| load_from_file(file) }
+
+		files.each { |file| load_steps_from_file(file) }		# Scan each file for step definitions
 	end
 
-	def load_from_file(file)
-		File.read(file).scan($lang.step_pattern) do |command, params|
+	def load_steps_from_file(file)
+		file_content = File.read(file)
+
+		# Detect all named functions defined in source code (used for guessing at param list for step-definitions that use a function reference rather than inline definition)
+		# This obviously may experience namespace collisions if multiple functions with the same name are defined in the codebase, but this is likely the best we can reasonably
+		# do with simple pattern-matching, without trying to statically analyse the code to follow module-import/export chains
+		if $lang.function_pattern
+			file_content.scan($lang.function_pattern) do |function_name, function_params|
+				if function_name
+					@functions[function_name] = function_params
+				end
+			end
+		end
+
+		# Now scan for step-definitions, and extract the gherkin command, params, etc
+		file_content.scan($lang.step_pattern) do |command, function_name, params|
 			if $lang.escape_char
 				command.gsub!("#{$lang.escape_char}#{$lang.escape_char}", $lang.escape_char)
+			end
+
+			# If we have a named function but no params, check whether it's a reference to a function defined elsewhere, and if it looks like
+			# it might be, use the param list from the previously-discovered definition.
+			if function_name && params.nil? && @functions[function_name]
+				params = @functions[function_name]
 			end
 
 			@terms.push(GherkinFunction.new(command, params)) 
@@ -96,7 +117,6 @@ class GherkinDictionary
 	end
 
 	def load_examples_from_path(path)
-		#example_files = Dir[path+"/**/errCode.feature"]
 		example_files = Dir[path+$lang.feature_fileglob]
 		example_files.each { |file|
 			load_examples_from_file(file)
